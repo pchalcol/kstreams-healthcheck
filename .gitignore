@@ -1,0 +1,7 @@
+.idea
+target
+*.iml
+*.swp
+.ensime
+.ensime_cache
+
