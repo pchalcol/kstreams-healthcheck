@@ -98,26 +98,3 @@ public class Producer {
     }
 }
 
-/*
-class Healthcheck {
-// TODO
-    private ExecutorService executor =
-            new ThreadPoolExecutor(1,
-                    1,
-                    1000,
-                    TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<>());
-
-    void start() throws Exception {
-        executor.submit(() -> {
-            while (true) {
-
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-}*/
