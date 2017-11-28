@@ -75,9 +75,15 @@ public class Server {
         });
 
         Spark.get("/healthcheck", (request, response) -> {
-            response.type("application/json");
-            StandardResponse healthcheck = "OK".equals(service.healthcheck()) ? success : error;
-            return new Gson().toJson(healthcheck);
+            String healthcheck = service.healthcheck();
+            boolean ok = "OK".equals(healthcheck);
+
+	    StandardResponse status = ok ? success : error;
+
+	    if (!ok) response.status(503);
+	    response.type("application/json");
+
+            return new Gson().toJson(status);
         });
     }
 
