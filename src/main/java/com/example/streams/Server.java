@@ -78,10 +78,10 @@ public class Server {
             String healthcheck = service.healthcheck();
             boolean ok = "OK".equals(healthcheck);
 
-	    StandardResponse status = ok ? success : error;
+            StandardResponse status = ok ? success : error;
+            if (!ok) response.status(503);
 
-	    if (!ok) response.status(503);
-	    response.type("application/json");
+            response.type("application/json");
 
             return new Gson().toJson(status);
         });
