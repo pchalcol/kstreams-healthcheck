@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * <code>
  *     <ul>
  *     <li>./kafka-topics --create --topic events --zookeeper localhost:2181 --partitions 4 --replication-factor 1</li>
- *     <li>./kafka-topics --create --topic library --zookeeper localhost:2181 --partitions 4 --replication-factor 1 </li>
+ *     <li>./kafka-topics --create --topic library --zookeeper localhost:2181 --partitions 4 --replication-factor 1</li>
  *     </ul>
  * </code>
  */
