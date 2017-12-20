@@ -26,17 +26,17 @@ public class Producer {
         @SuppressWarnings("unchecked")
         final List<KeyValue<Long, String>> titles = Arrays.asList(
                 KeyValue.pair(1L, "Fresh Fruit For Rotting Vegetables"),
-                KeyValue.pair(2L,"We Are the League"),
-                KeyValue.pair(3L,"Live In A Dive"),
-                KeyValue.pair(4L,"PSI"),
-                KeyValue.pair(5L,"Totally Exploited"),
-                KeyValue.pair(6L,"The Audacity Of Hype"),
+                KeyValue.pair(2L, "We Are the League"),
+                KeyValue.pair(3L, "Live In A Dive"),
+                KeyValue.pair(4L, "PSI"),
+                KeyValue.pair(5L, "Totally Exploited"),
+                KeyValue.pair(6L, "The Audacity Of Hype"),
                 KeyValue.pair(7L, "Licensed to Ill"),
-                KeyValue.pair(8L,"De La Soul Is Dead"),
-                KeyValue.pair(9L,"Straight Outta Compton"),
-                KeyValue.pair(10L,"Fear Of A Black Planet"),
-                KeyValue.pair(11L,"Curtain Call - The Hits"),
-                KeyValue.pair(12L,"The Calling"));
+                KeyValue.pair(8L, "De La Soul Is Dead"),
+                KeyValue.pair(9L, "Straight Outta Compton"),
+                KeyValue.pair(10L, "Fear Of A Black Planet"),
+                KeyValue.pair(11L, "Curtain Call - The Hits"),
+                KeyValue.pair(12L, "The Calling"));
 
         titles.forEach(System.out::println);
 

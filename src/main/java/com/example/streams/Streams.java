@@ -1,8 +1,10 @@
 package com.example.streams;
 
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.*;
 import org.apache.kafka.streams.kstream.*;
+import org.apache.kafka.streams.state.KeyValueStore;
 
 import java.util.Properties;
 
@@ -10,11 +12,7 @@ public class Streams {
     public static void main(String[] args) throws Exception {
         final Properties streamConfig = Configurations.StreamConfig();
 
-
-        // TODO Serdes -> ClassCastExceptions
-
         // builder
-        //final KStreamBuilder builder = new KStreamBuilder();
         final StreamsBuilder builder = new StreamsBuilder();
 
         // play events
@@ -22,14 +20,26 @@ public class Streams {
                 builder.stream("events", Consumed.with(Serdes.Long(), Serdes.String()));
         // titles with ids
         final KTable<Long, String> table =
-                builder.table("library", Consumed.with(Serdes.Long(), Serdes.String()), Materialized.as("titles"));
+                builder.table("library", Materialized.<Long, String, KeyValueStore<Bytes, byte[]>>as("titles")
+                        .withKeySerde(Serdes.Long())
+                        .withValueSerde(Serdes.String()));
 
-        kStream.map((k, v) -> {
+        KStream<Long, String> stream = kStream.map((k, v) -> {
             System.out.println(String.format("%s - k=%d, v=%s", Thread.currentThread().getName(), k, v));
             return KeyValue.pair(k, v);
-        }).leftJoin(table, (k, v) -> v.toLowerCase(), Joined.with(Serdes.Long(), Serdes.String(), Serdes.String()))
-                .groupBy((k, v) -> v, Serialized.with(Serdes.String(), Serdes.String()))
-                .count(Materialized.as("events-counts"));
+        });
+
+        KStream<Long, String> leftJoinedStream = stream.leftJoin(table,
+                        (event, title) -> title.toLowerCase(),
+                        Joined.with(Serdes.Long(), Serdes.String(), Serdes.String()));
+
+         KGroupedStream<String, String> groupedStream = leftJoinedStream
+                 .groupBy((k, v) -> { System.out.println(String.format("%s - groupBy: k=%d, v=%s", Thread.currentThread().getName(), k, v)); return v; },
+                         Serialized.with(Serdes.String(), Serdes.String()));
+
+        groupedStream.count(Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("events-counts")
+                .withKeySerde(Serdes.String())
+                .withValueSerde(Serdes.Long()));
 
         // topology
         Topology topology = builder.build();
